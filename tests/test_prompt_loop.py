@@ -3,6 +3,7 @@ from pathlib import Path
 
 import pytest
 
+from scripts.evaluate_prompt_suite import write_bad_cases
 from scripts.init_task_prompt import init_task_prompt
 
 
@@ -35,3 +36,18 @@ def test_init_task_prompt_refuses_existing_version(tmp_path):
 
     with pytest.raises(FileExistsError):
         init_task_prompt(tmp_path, "texture_transfer", "v0", source_system, source_user, False)
+
+
+def test_write_bad_cases_sorts_fp_before_fn(tmp_path):
+    report = {
+        "error_cases": [
+            {"sample_id": "fn", "error_type": "FN"},
+            {"sample_id": "fp", "error_type": "FP"},
+        ]
+    }
+    output = tmp_path / "bad_cases.json"
+
+    write_bad_cases(report, output)
+
+    cases = json.loads(output.read_text(encoding="utf-8"))
+    assert [case["sample_id"] for case in cases] == ["fp", "fn"]

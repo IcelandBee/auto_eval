@@ -226,6 +226,17 @@ def evaluate_offline(
     }
 
 
+def write_bad_cases(report: dict[str, Any], output_path: Path) -> list[dict[str, Any]]:
+    def sort_key(item: dict[str, Any]) -> tuple[int, str]:
+        priority = 0 if item.get("error_type") == "FP" else 1
+        return priority, str(item.get("sample_id", ""))
+
+    cases = sorted(report.get("error_cases", []), key=sort_key)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(cases, ensure_ascii=False, indent=2), encoding="utf-8")
+    return cases
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", default="configs/task_adapter_config.json")
@@ -237,6 +248,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--human-json")
     parser.add_argument("--model-json")
     parser.add_argument("--report-json")
+    parser.add_argument("--bad-cases-json")
     parser.add_argument("--preview-prompts", action="store_true")
     parser.add_argument("--skip-schema-validation", action="store_true")
     return parser.parse_args()
@@ -272,6 +284,10 @@ def main() -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Report saved to: {output_path}")
+    if args.bad_cases_json:
+        bad_cases_path = Path(args.bad_cases_json)
+        write_bad_cases(report, bad_cases_path)
+        print(f"Bad cases saved to: {bad_cases_path}")
 
 
 if __name__ == "__main__":
