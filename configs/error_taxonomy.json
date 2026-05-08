@@ -1,0 +1,27 @@
+{
+  "version": "v0",
+  "common": {
+    "wrong_target": "The edit is applied to the wrong object, person, or region.",
+    "missing_core_edit": "The core requested edit is missing or visibly incomplete.",
+    "reference_mismatch": "The result does not match the task-relevant content from Image B.",
+    "source_preservation_failure": "Important non-target content from Image A is visibly changed.",
+    "edit_overreach": "The edit affects visible non-target regions.",
+    "physical_implausibility": "The result contains clear physical, anatomical, structural, contact, support, occlusion, perspective, or scale errors.",
+    "reference_leakage": "Irrelevant background, person, environment, or objects from Image B leak into Image C.",
+    "artifact_or_low_quality": "The result has obvious artifacts, corruption, deformation, or severe quality degradation."
+  },
+  "tasks": {
+    "human_item": {
+      "object_count_mismatch": "The target object quantity does not match Image B or P.",
+      "object_identity_mismatch": "The target object category or main visible identity does not match Image B or P.",
+      "invalid_hand_object_interaction": "The hand, body, and target object interaction is visibly unsupported or physically impossible.",
+      "severe_hand_or_limb_artifact": "The edit introduces clear severe hand, finger, arm, or limb structure errors."
+    },
+    "texture_transfer": {
+      "texture_not_transferred": "The target garment texture is missing, incomplete, or visibly retains important original texture.",
+      "texture_mismatch": "The transferred texture's dominant color, pattern, density, scale, material, or visual identity clearly mismatches Image B.",
+      "garment_structure_changed": "The target garment structure, boundary, silhouette, length, opening, or anchor details visibly change.",
+      "non_target_garment_changed": "Non-target clothing or other non-target visible regions are changed."
+    }
+  }
+}

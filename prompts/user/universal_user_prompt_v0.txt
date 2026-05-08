@@ -1,0 +1,15 @@
+Please perform the evaluation for this image editing sample.
+
+Inputs:
+- image 1 = source image (Image A)
+- image 2 = reference image (Image B)
+- image 3 = edited image (Image C)
+- prompt = "{PROMPT}"
+
+Follow the system rules and output the required JSON only.
+
+Reminder:
+- Judge only from visible evidence in Image A, Image B, Image C, and P.
+- Check instruction following, reference fidelity, source preservation, edit localization, physical/structural realism, and image quality.
+- If any dimension fails, the overall result must fail.
+- Use concise Chinese reasons.

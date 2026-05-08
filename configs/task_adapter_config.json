@@ -1,0 +1,68 @@
+{
+  "version": "v0",
+  "universal_prompt": "prompts/universal/universal_qc_prompt_v0.txt",
+  "universal_redlines": "prompts/universal/universal_redlines_v0.txt",
+  "universal_user_prompt": "prompts/user/universal_user_prompt_v0.txt",
+  "output_schema": "configs/output_schema.json",
+  "error_taxonomy": "configs/error_taxonomy.json",
+  "dimensions": [
+    "instruction_following",
+    "reference_fidelity",
+    "source_preservation",
+    "edit_localization",
+    "physical_and_structural_realism",
+    "image_quality_and_artifacts"
+  ],
+  "prompt_modes": {
+    "original_task_prompt": "Use the existing task-specific system/user prompt files without universal prompt composition.",
+    "universal_only": "Use only the universal system prompt and universal user prompt.",
+    "universal_adapter": "Append the task adapter after the universal system prompt and use the universal user prompt."
+  },
+  "tasks": {
+    "human_item": {
+      "task_name": "human_item",
+      "adapter": "prompts/adapters/human_item_adapter_v0.txt",
+      "original_system_prompt": "code/human_item/prompts/system_prompt.txt",
+      "original_user_prompt": "code/human_item/prompts/user_prompt.txt",
+      "data_sample": "data/human_item/human_item_label_sample.json",
+      "legacy_dimensions": [
+        "instruction_following",
+        "perceptual_quality"
+      ],
+      "prompt_modes": [
+        "original_task_prompt",
+        "universal_only",
+        "universal_adapter"
+      ],
+      "task_error_types": [
+        "object_count_mismatch",
+        "object_identity_mismatch",
+        "invalid_hand_object_interaction",
+        "severe_hand_or_limb_artifact"
+      ]
+    },
+    "texture_transfer": {
+      "task_name": "texture_transfer",
+      "adapter": "prompts/adapters/texture_transfer_adapter_v0.txt",
+      "original_system_prompt": "code/texture_person/prompts/system_prompt.txt",
+      "original_user_prompt": "code/texture_person/prompts/user_prompt.txt",
+      "data_sample": "data/texture_person/texture_person_label_sample.json",
+      "legacy_dimensions": [
+        "instruction_following",
+        "texture_consistency",
+        "clothes_consistency"
+      ],
+      "prompt_modes": [
+        "original_task_prompt",
+        "universal_only",
+        "universal_adapter"
+      ],
+      "task_error_types": [
+        "texture_not_transferred",
+        "texture_mismatch",
+        "garment_structure_changed",
+        "non_target_garment_changed"
+      ]
+    }
+  }
+}

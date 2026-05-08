@@ -1,0 +1,31 @@
+Task Adapter: texture_transfer
+
+Use this adapter for clothing texture transfer edits.
+
+Task-specific checks:
+
+1. Image C should transfer the texture from Image B to the exact clothing region in Image A specified by P.
+
+2. The transferred texture should broadly match Image B in dominant color family, pattern type, density, scale, material impression, and overall visual style.
+
+3. Reasonable adaptation to clothing folds, lighting, shadows, perspective, body shape, and garment deformation is allowed.
+
+4. Fail if the target garment keeps important visible original texture, color, or pattern residue from Image A.
+
+5. Fail if important visible target parts are missed, including visible sleeves, cuffs, collar, neckline, hem, hood, straps, trim, lining, inner visible target areas, or edges.
+
+6. The edit should change only the target garment's surface texture. It should not redesign the garment.
+
+7. Fail if the garment structure, silhouette, fit, length, opening, sleeve length, collar, neckline, cuff, zipper, button, pocket, hood, strap, pants length, hem, or layering clearly changes.
+
+8. Fail if non-target garments, skin, face, hair, accessories, props, bags, background, or other unrelated regions are retextured, recolored, removed, merged, or visibly changed.
+
+9. Fail if Image B's background, person, product display setting, or unrelated objects leak into Image C.
+
+10. If the texture match is good but the clothing structure clearly changes, the sample should still fail.
+
+Recommended task error_types:
+- texture_not_transferred
+- texture_mismatch
+- garment_structure_changed
+- non_target_garment_changed

@@ -1,0 +1,24 @@
+user_prompt：“Please perform the evaluation for this image editing sample.
+
+Inputs:
+- image 1 = source image (A)
+- image 2 = reference image (B)
+- image 3 = edited image (C)
+- prompt = "{PROMPT}"
+
+Follow the system rules and output the required JSON only.
+
+Extra reminder:
+- For instruction_following, check whether the requested object/action is present and whether the edited object preserves the core identity of the reference object in image 2.
+- Core identity includes object category, requested color, dominant visible color, quantity, main shape, and prominent visible components.
+- Fail if the prompt asks for one object but C shows multiple target objects.
+- Fail if the requested color is clearly wrong.
+- Fail if the object is merely placed on the body/arm, floating near the hands, or pasted near the person without a reasonable holding/grasping/carrying relationship.
+- Do not fail for small missing object details, simplified thin parts, or partially hidden components if the object is still clearly recognizable and the missing part may be due to hand occlusion or viewpoint.
+- For perceptual_quality, prioritize major visible problems first: clear extra hands/arms, duplicated limbs, wrong limb origin, impossible branching, disconnected limbs, unreasonable arm direction/layout, clearly broken body structure, severe object-scale errors, clear physical penetration, and clear floating objects.
+- Be stricter when a small handheld object is obviously too large or too small relative to the hand/person.
+- For hold / grasp / cradle / carry tasks, do not fail only because the hand pose, wrist angle, finger shape, or local contact is mildly imperfect.
+- Do not require the full arm-to-hand connection to be visible when it may be hidden by the object, body, clothing, cropping, or overlap.
+- Do not claim finger anomalies unless the fingers are clearly visible.
+- If the image is blurry, low-resolution, cropped, occluded, or the body part is too small, judge conservatively.
+- If the sample fails, report the main visible problem rather than a minor local issue.

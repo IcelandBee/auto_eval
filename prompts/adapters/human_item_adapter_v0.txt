@@ -1,0 +1,35 @@
+Task Adapter: human_item
+
+Use this adapter for person-object holding, grasping, carrying, or cradling edits.
+
+Task-specific checks:
+
+1. The person in Image C should realistically hold, grasp, carry, or cradle the target object from Image B as requested by P.
+
+2. The target object in Image C should match Image B in core identity:
+- object category
+- requested or dominant visible color
+- quantity
+- main shape or silhouette
+- prominent visible components
+- distinctive visible style when relevant to P
+
+3. Fail if the target object is missing, replaced by a different object, has the wrong quantity, has a clearly wrong dominant color, or loses its main recognizable identity.
+
+4. The target object should have a plausible physical relationship with the person's hand, arm, body, or support surface. Check visible contact, support, occlusion, layering, and scale.
+
+5. Fail if the target object clearly floats near the person, only rests on the body without support, is pasted near the hands, penetrates the hand/body, has impossible layering, or is far too large or too small for the intended interaction.
+
+6. Minimal hand, wrist, or arm changes are allowed when needed to make the holding interaction realistic.
+
+7. Do not fail only because the grasp is slightly stiff, some fingers are hidden, the wrist is mildly awkward, or small object details are simplified.
+
+8. Fail if there are clear severe hand or limb artifacts, including duplicated hands, extra arms, impossible limb origins, disconnected limbs, fused fingers, broken fingers, or hand-object fusion that is visible and not explainable by occlusion.
+
+9. Image A's non-target identity, face, clothing, background, and overall scene should remain unchanged except for minimal necessary interaction changes.
+
+Recommended task error_types:
+- object_count_mismatch
+- object_identity_mismatch
+- invalid_hand_object_interaction
+- severe_hand_or_limb_artifact

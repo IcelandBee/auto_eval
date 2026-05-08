@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Prompt Optimizer Patch",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_type",
+    "prompt_layer",
+    "problem_type",
+    "current_prompt_issue",
+    "decision",
+    "anti_bloat_action",
+    "patch",
+    "expected_impact",
+    "regression_requirements"
+  ],
+  "properties": {
+    "task_type": {
+      "type": "string"
+    },
+    "prompt_layer": {
+      "type": "string",
+      "enum": [
+        "universal",
+        "adapter",
+        "final_task_prompt"
+      ]
+    },
+    "problem_type": {
+      "type": "string"
+    },
+    "current_prompt_issue": {
+      "type": "string"
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "rewrite_existing_rule",
+        "merge_existing_rules",
+        "add_general_rule",
+        "delete_low_value_rule",
+        "no_prompt_change_record_case"
+      ]
+    },
+    "anti_bloat_action": {
+      "type": "string"
+    },
+    "patch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target_section",
+        "before",
+        "after"
+      ],
+      "properties": {
+        "target_section": {
+          "type": "string"
+        },
+        "before": {
+          "type": "string"
+        },
+        "after": {
+          "type": "string"
+        }
+      }
+    },
+    "expected_impact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "precision",
+        "recall",
+        "fp",
+        "fn"
+      ],
+      "properties": {
+        "precision": {
+          "type": "string"
+        },
+        "recall": {
+          "type": "string"
+        },
+        "fp": {
+          "type": "string"
+        },
+        "fn": {
+          "type": "string"
+        }
+      }
+    },
+    "regression_requirements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+python /mnt/DATA_71/h30082292/code/vlm_eval/multi_vlm/auto_eval_texture_person/check_and_eval.py \
+  --base-url "http://10.154.39.57:8001/v1" \
+  --api-key "123456" \
+  --model-name "gemma-4-31B-it" \
+  --input-json "/mnt/DATA_71/public/data/testing_sets/real_data_bench/texture_person_v2/texture_person.json" \
+  --system-prompt-file "/mnt/DATA_71/h30082292/code/vlm_eval/multi_vlm/auto_eval_texture_person/prompts/system_prompt_v8_precision.txt" \
+  --user-prompt-file "/mnt/DATA_71/h30082292/code/vlm_eval/multi_vlm/auto_eval_texture_person/prompts/user_prompt_v6_precision.txt" \
+  --output-jsonl "/mnt/DATA_71/h30082292/outputs/vlm_eval/multi_vlm/texture_person_test/v8_precision/vlm_quality_check_output_gemma.jsonl" \
+  --metric-output "/mnt/DATA_71/h30082292/outputs/vlm_eval/multi_vlm/texture_person_test/v8_precision/metric_gemma.txt" \
+  --error-output "/mnt/DATA_71/h30082292/outputs/vlm_eval/multi_vlm/texture_person_test/v8_precision/error_cases_gemma.json" \
+  --max-workers 12 \
+  --max-tokens 1024 \
+  --min-pixels 199808 \
+  --max-pixels 1048576 \
+  --temperature 0.1 \
+  --top-p 0.95 \
+  --top-k 32 \
+  --repetition-penalty 1.05 \
+  --seed 42 \
+  --timeout 300 \
+  --max-retries 0 \
+  --log-every 1 \
+  --overwrite True

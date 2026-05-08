@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Universal Image Editing QC Output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "is_passed",
+    "instruction_following",
+    "reference_fidelity",
+    "source_preservation",
+    "edit_localization",
+    "physical_and_structural_realism",
+    "image_quality_and_artifacts"
+  ],
+  "properties": {
+    "is_passed": {
+      "type": "boolean"
+    },
+    "instruction_following": {
+      "$ref": "#/$defs/dimension_result"
+    },
+    "reference_fidelity": {
+      "$ref": "#/$defs/dimension_result"
+    },
+    "source_preservation": {
+      "$ref": "#/$defs/dimension_result"
+    },
+    "edit_localization": {
+      "$ref": "#/$defs/dimension_result"
+    },
+    "physical_and_structural_realism": {
+      "$ref": "#/$defs/dimension_result"
+    },
+    "image_quality_and_artifacts": {
+      "$ref": "#/$defs/dimension_result"
+    }
+  },
+  "$defs": {
+    "dimension_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "passed",
+        "reason",
+        "error_types"
+      ],
+      "properties": {
+        "passed": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "error_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

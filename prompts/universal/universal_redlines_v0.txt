@@ -1,0 +1,27 @@
+Universal redlines for image-editing QC:
+
+1. wrong_target
+The requested edit is applied to the wrong object, wrong person, or wrong region.
+
+2. missing_core_edit
+The main edit requested by P is missing or visibly incomplete.
+
+3. reference_mismatch
+Image C does not match the task-relevant object, texture, style, color, shape, quantity, or visual identity from Image B.
+
+4. source_preservation_failure
+Image A's non-target person, identity, pose, face, hair, clothing, background, scene layout, or non-target object is visibly changed.
+
+5. edit_overreach
+The edit affects visible non-target regions such as skin, face, hair, accessories, props, background, nearby garments, or unrelated objects.
+
+6. physical_implausibility
+Image C contains a clear physical or structural impossibility, including impossible anatomy, impossible contact, floating objects, penetration, wrong occlusion/layering, severe scale errors, or broken garment/object structure.
+
+7. reference_leakage
+Image B's background, person, display environment, or irrelevant elements leak into Image C.
+
+8. artifact_or_low_quality
+Image C contains obvious artifacts, broken boundaries, severe blur, corrupted areas, visible repainting traces, unnatural seams, deformation, or generation collapse.
+
+Only fail on visible evidence. Do not treat invisible, cropped, fully occluded, very small, or too blurry regions as confirmed errors.
