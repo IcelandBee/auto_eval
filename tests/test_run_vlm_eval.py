@@ -1,10 +1,13 @@
 from pathlib import Path
 
+import pytest
+
 from scripts.prompt_assets import PromptAssetConfig
 from scripts.run_vlm_eval import (
     build_output_schema,
     build_request_kwargs,
     normalize_model_output,
+    validate_gemma_max_soft_tokens,
 )
 
 
@@ -78,3 +81,40 @@ def test_build_request_kwargs_uses_task_mode_prompts_and_three_images():
         "data:image/jpeg;base64,edt",
     ]
     assert "reference_fidelity" in request["response_format"]["json_schema"]["schema"]["properties"]
+
+
+def test_validate_gemma_max_soft_tokens_rejects_unsupported_value():
+    with pytest.raises(ValueError, match="Unsupported max_soft_tokens value"):
+        validate_gemma_max_soft_tokens(2048)
+
+
+def test_gemma_request_accepts_supported_max_soft_tokens():
+    config = PromptAssetConfig.load(ROOT / "configs" / "task_adapter_config.json")
+    record = {
+        "cond_1": "source.jpg",
+        "cond_2": "reference.jpg",
+        "file_name": "edited.jpg",
+        "prompt": "Do the edit.",
+    }
+
+    request = build_request_kwargs(
+        config=config,
+        task_name="texture_transfer",
+        mode="universal_only",
+        record=record,
+        sample_idx=0,
+        model_name="gemma-4-31B-it",
+        image_urls=["src", "ref", "edt"],
+        max_tokens=1024,
+        temperature=0.1,
+        top_p=0.95,
+        seed=42,
+        top_k=32,
+        repetition_penalty=1.05,
+        min_pixels=1,
+        max_pixels=2,
+        max_soft_tokens=280,
+        use_response_format=True,
+    )
+
+    assert request["extra_body"]["mm_processor_kwargs"]["max_soft_tokens"] == 280

@@ -99,8 +99,14 @@ def normalize_dimension_result(value: Any) -> dict[str, Any]:
     }
 
 
+def is_empty_label(value: Any) -> bool:
+    return value is None or (isinstance(value, str) and not value.strip())
+
+
 def get_human_dimension(record: dict[str, Any], dim: str) -> dict[str, Any] | None:
     if dim not in record:
+        return None
+    if is_empty_label(record[dim]):
         return None
     result = normalize_dimension_result(record[dim])
     reason_key = f"{dim}_reasoning"
@@ -111,6 +117,8 @@ def get_human_dimension(record: dict[str, Any], dim: str) -> dict[str, Any] | No
 
 def get_model_dimension(record: dict[str, Any], dim: str) -> dict[str, Any] | None:
     if dim not in record:
+        return None
+    if is_empty_label(record[dim]):
         return None
     return normalize_dimension_result(record[dim])
 

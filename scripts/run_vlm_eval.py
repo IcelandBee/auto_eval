@@ -36,6 +36,7 @@ except ModuleNotFoundError:
 
 
 _THREAD_LOCAL = threading.local()
+VALID_GEMMA_MAX_SOFT_TOKENS = (70, 140, 280, 560, 1120)
 
 
 def str2bool(value: Any) -> bool:
@@ -77,6 +78,14 @@ def build_output_schema(dimensions: list[str]) -> dict[str, Any]:
             }
         },
     }
+
+
+def validate_gemma_max_soft_tokens(value: int) -> None:
+    if value not in VALID_GEMMA_MAX_SOFT_TOKENS:
+        valid = ", ".join(str(item) for item in VALID_GEMMA_MAX_SOFT_TOKENS)
+        raise ValueError(
+            f"Unsupported max_soft_tokens value: {value}. Valid values are ({valid})"
+        )
 
 
 def image_path_to_data_url(path: Path) -> str:
@@ -139,6 +148,7 @@ def build_request_kwargs(
         mm_kwargs["min_pixels"] = min_pixels
         mm_kwargs["max_pixels"] = max_pixels
     elif "gemma" in model_lower:
+        validate_gemma_max_soft_tokens(max_soft_tokens)
         mm_kwargs["max_soft_tokens"] = max_soft_tokens
 
     request_kwargs: dict[str, Any] = {
@@ -505,7 +515,13 @@ def parse_args() -> argparse.Namespace:
 
     parser.add_argument("--min-pixels", type=int, default=199808)
     parser.add_argument("--max-pixels", type=int, default=1048576)
-    parser.add_argument("--max-soft-tokens", type=int, default=2048)
+    parser.add_argument(
+        "--max-soft-tokens",
+        type=int,
+        choices=VALID_GEMMA_MAX_SOFT_TOKENS,
+        default=280,
+        help="max_soft_tokens passed to mm_processor_kwargs for Gemma models.",
+    )
 
     parser.add_argument("--limit", type=int, default=0)
     parser.add_argument("--log-every", type=int, default=10)

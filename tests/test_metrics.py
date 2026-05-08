@@ -1,5 +1,7 @@
 from scripts.evaluate_prompt_suite import (
+    build_dimension_metrics,
     calculate_metrics,
+    get_human_dimension,
     normalize_dimension_result,
     parse_label,
 )
@@ -52,3 +54,47 @@ def test_normalize_dimension_result_converts_single_error_type_string():
     result = normalize_dimension_result(value)
 
     assert result["error_types"] == ["wrong_target"]
+
+
+def test_empty_dimension_label_is_treated_as_missing():
+    record = {
+        "file_name": "sample.jpg",
+        "instruction_following": "",
+        "instruction_following_reasoning": "",
+    }
+
+    result = get_human_dimension(record, "instruction_following")
+
+    assert result is None
+
+
+def test_dimension_metrics_skip_empty_human_labels():
+    human_records = [
+        {
+            "file_name": "a.jpg",
+            "groundtruth": "pass",
+            "instruction_following": "",
+        },
+        {
+            "file_name": "b.jpg",
+            "groundtruth": "fail",
+            "instruction_following": "fail",
+        },
+    ]
+    model_records = [
+        {
+            "file_name": "a.jpg",
+            "is_passed": True,
+            "instruction_following": {"passed": True, "reason": "ok", "error_types": []},
+        },
+        {
+            "file_name": "b.jpg",
+            "is_passed": False,
+            "instruction_following": {"passed": False, "reason": "bad", "error_types": []},
+        },
+    ]
+
+    metrics = build_dimension_metrics(human_records, model_records, ["instruction_following"])
+
+    assert metrics["instruction_following"]["Total"] == 1
+    assert metrics["instruction_following"]["TN"] == 1
