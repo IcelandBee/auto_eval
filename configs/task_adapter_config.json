@@ -16,7 +16,8 @@
   "prompt_modes": {
     "original_task_prompt": "Use the existing task-specific system/user prompt files without universal prompt composition.",
     "universal_only": "Use only the universal system prompt and universal user prompt.",
-    "universal_adapter": "Append the task adapter after the universal system prompt and use the universal user prompt."
+    "universal_adapter": "Append the task adapter after the universal system prompt and use the universal user prompt.",
+    "task_prompt": "Use a versioned task-specific system/user prompt from prompts/tasks/{task}/{version}."
   },
   "tasks": {
     "human_item": {
@@ -55,7 +56,17 @@
       "prompt_modes": [
         "original_task_prompt",
         "universal_only",
-        "universal_adapter"
+        "universal_adapter",
+        "task_prompt"
+      ],
+      "task_prompt_versions": [
+        "v0"
+      ],
+      "default_task_prompt_version": "v0",
+      "task_prompt_dimensions": [
+        "instruction_following",
+        "texture_consistency",
+        "clothes_consistency"
       ],
       "task_error_types": [
         "texture_not_transferred",

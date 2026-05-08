@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 
 import pytest
 
@@ -94,3 +95,43 @@ def test_write_prompt_files_exports_system_and_user_prompts(tmp_path):
     assert result["user_prompt"].is_file()
     assert "Task Adapter: human_item" in result["system_prompt"].read_text(encoding="utf-8")
     assert "{PROMPT}" in result["user_prompt"].read_text(encoding="utf-8")
+
+
+def test_task_prompt_mode_loads_versioned_task_prompts(tmp_path):
+    config_path = tmp_path / "configs" / "task_adapter_config.json"
+    prompt_dir = tmp_path / "prompts" / "tasks" / "texture_transfer" / "v0"
+    config_path.parent.mkdir(parents=True)
+    prompt_dir.mkdir(parents=True)
+    config_path.write_text(
+        json.dumps(
+            {
+                "dimensions": ["reference_fidelity"],
+                "tasks": {
+                    "texture_transfer": {
+                        "prompt_modes": ["task_prompt"],
+                        "task_prompt_dimensions": [
+                            "instruction_following",
+                            "texture_consistency",
+                            "clothes_consistency",
+                        ],
+                    }
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    (prompt_dir / "system_prompt.txt").write_text("TASK SYSTEM", encoding="utf-8")
+    (prompt_dir / "user_prompt.txt").write_text('prompt = "{PROMPT}"', encoding="utf-8")
+
+    config = PromptAssetConfig.load(config_path)
+
+    assert compose_system_prompt(config, "texture_transfer", "task_prompt", "v0") == "TASK SYSTEM"
+    assert (
+        get_user_prompt_template(config, "texture_transfer", "task_prompt", "v0")
+        == 'prompt = "{PROMPT}"'
+    )
+    assert get_dimensions_for_mode(config, "texture_transfer", "task_prompt") == [
+        "instruction_following",
+        "texture_consistency",
+        "clothes_consistency",
+    ]
