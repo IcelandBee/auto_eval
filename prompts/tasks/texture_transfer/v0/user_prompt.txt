@@ -1,0 +1,18 @@
+Please perform the evaluation for this clothing texture transfer sample.
+
+Inputs:
+- image 1 = source image (A)
+- image 2 = reference texture image (B)
+- image 3 = edited image (C)
+- prompt = "{PROMPT}"
+
+Follow the system rules and output the required JSON only.
+
+Extra reminder:
+- This is a texture-only edit.
+- First identify the target garment in P.
+- Then check three things: correct target coverage, texture match to B, and A-C clothing/non-target preservation.
+- Do not fail tiny, blurry, cropped, shadowed, or ambiguous details that cannot be reliably verified.
+
+Strict reminder:
+For this run, prioritize Precision over Recall. When there is any clear visible important error, choose FAIL.
