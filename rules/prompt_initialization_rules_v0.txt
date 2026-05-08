@@ -1,0 +1,16 @@
+Prompt initialization rules for VLM image-editing QC:
+
+1. Generate a full task-specific v0 prompt from the universal template, human labels, and prompt design rules.
+2. Do not generate an adapter fragment. The output should be a complete system prompt and user prompt.
+3. Always summarize human labels before writing the prompt.
+4. Use existing annotation dimensions as strong hints, but derive final dimensions from recurring failure reasons and task requirements.
+5. Keep dimensions small and task-specific. Prefer 2-6 clear dimensions when possible.
+6. Each dimension must cover a visible, judgeable class of quality issues.
+7. Do not copy individual human reasons directly into the prompt. Abstract them into visual criteria.
+8. Do not add one-case rules. Case-specific patterns should be listed in the summary as excluded patterns.
+9. Preserve visible-evidence constraints. Do not fail invisible, fully occluded, cropped, too small, blurry, or ambiguous regions.
+10. Preserve useful tolerance rules for acceptable variation, especially folds, lighting, perspective, occlusion, and minor unverifiable details.
+11. Prefer Precision for training-data filtering, but do not make the initial prompt so strict that likely valid samples are broadly rejected.
+12. The output schema must match the selected dimensions and define overall pass as all dimensions passing.
+13. Save annotation_summary.json with the generated v0 prompt so the design can be reviewed.
+14. After v0 is generated, stop initialization and hand off to the auto-tuning loop.
