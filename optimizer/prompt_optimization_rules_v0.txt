@@ -1,0 +1,12 @@
+Prompt optimization rules for image-editing VLM QC:
+
+1. Optimize for Precision first. FP means human fail but model pass, and is the highest-risk error for training-data filtering.
+2. Prefer reducing recurring FP patterns over improving aggregate Accuracy.
+3. Do not accept a prompt change that creates a large FN increase without an explicit trade-off.
+4. Modify prompts only for visible, recurring, generalizable failures.
+5. Do not overfit one sample or add a long one-case checklist.
+6. Preserve tolerance for invisible, occluded, cropped, blurry, tiny, shadowed, or ambiguous regions.
+7. For texture transfer, fail clear target residue, non-target contamination, and garment structural anchor changes.
+8. For texture transfer, structural anchors include neckline, collar, cuffs, sleeve length, hem, zipper, buttons, cutouts, straps, laces, pockets, hood, openings, silhouette, fit, and layering.
+9. Save each accepted prompt as a new version. Do not overwrite previous prompt versions.
+10. After writing a new version, re-run evaluation and compare Precision, Recall, FP, FN, and F1.
