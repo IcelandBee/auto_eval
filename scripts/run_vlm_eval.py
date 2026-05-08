@@ -118,6 +118,7 @@ def build_request_kwargs(
     config: PromptAssetConfig,
     task_name: str,
     mode: str,
+    prompt_version: str | None = None,
     record: dict[str, Any],
     sample_idx: int,
     model_name: str,
@@ -136,10 +137,10 @@ def build_request_kwargs(
     if len(image_urls) != 3:
         raise ValueError("image_urls must contain source, reference, and edited image URLs")
 
-    system_prompt = compose_system_prompt(config, task_name, mode)
+    system_prompt = compose_system_prompt(config, task_name, mode, prompt_version)
     user_prompt = build_user_prompt(
         str(record["prompt"]),
-        get_user_prompt_template(config, task_name, mode),
+        get_user_prompt_template(config, task_name, mode, prompt_version),
     )
 
     model_lower = model_name.lower()
@@ -397,6 +398,7 @@ def infer_one(
         config=config,
         task_name=args.task,
         mode=args.mode,
+        prompt_version=args.prompt_version,
         record=record,
         sample_idx=sample_idx,
         model_name=args.model_name,
@@ -492,8 +494,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--mode",
         required=True,
-        choices=["original_task_prompt", "universal_only", "universal_adapter"],
+        choices=["original_task_prompt", "universal_only", "universal_adapter", "task_prompt"],
     )
+    parser.add_argument("--prompt-version")
     parser.add_argument("--input-json", required=True)
     parser.add_argument("--output-jsonl", required=True)
     parser.add_argument("--report-json")

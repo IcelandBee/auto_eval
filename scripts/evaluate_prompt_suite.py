@@ -243,7 +243,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--task", choices=["human_item", "texture_transfer"])
     parser.add_argument(
         "--mode",
-        choices=["original_task_prompt", "universal_only", "universal_adapter"],
+        choices=["original_task_prompt", "universal_only", "universal_adapter", "task_prompt"],
     )
     parser.add_argument("--human-json")
     parser.add_argument("--model-json")

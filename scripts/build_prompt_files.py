@@ -22,9 +22,10 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--mode",
-        choices=["original_task_prompt", "universal_only", "universal_adapter", "all"],
+        choices=["original_task_prompt", "universal_only", "universal_adapter", "task_prompt", "all"],
         default="all",
     )
+    parser.add_argument("--prompt-version")
     parser.add_argument("--output-dir", default="prompt_builds")
     return parser.parse_args()
 
@@ -39,7 +40,13 @@ def main() -> None:
         task = config.tasks[task_name]
         modes = list(task["prompt_modes"]) if args.mode == "all" else [args.mode]
         for mode in modes:
-            paths = write_prompt_files(config, task_name, mode, output_dir)
+            paths = write_prompt_files(
+                config,
+                task_name,
+                mode,
+                output_dir,
+                prompt_version=args.prompt_version,
+            )
             print(
                 f"{task_name} {mode}: "
                 f"system={paths['system_prompt']} "

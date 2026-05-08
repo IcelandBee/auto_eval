@@ -84,6 +84,15 @@ def validate_tasks(root: Path, config: dict[str, Any], taxonomy: dict[str, Any])
         if unknown_modes:
             raise ValueError(f"{task_name} has unknown prompt modes: {sorted(unknown_modes)}")
 
+        for version in task_config.get("task_prompt_versions", []):
+            task_prompt_dir = f"prompts/tasks/{task_name}/{version}"
+            require_file(root, f"{task_prompt_dir}/system_prompt.txt")
+            user_prompt = read_text(require_file(root, f"{task_prompt_dir}/user_prompt.txt"))
+            if "{PROMPT}" not in user_prompt:
+                raise ValueError(
+                    f"{task_name} {version} task user prompt must contain {{PROMPT}}"
+                )
+
         allowed_error_types = collect_error_types(taxonomy, task_name)
         unknown_error_types = set(task_config["task_error_types"]) - allowed_error_types
         if unknown_error_types:
@@ -96,6 +105,14 @@ def build_preview(root: Path, config: dict[str, Any], task_name: str, mode: str)
     task_config = config["tasks"][task_name]
     if mode == "original_task_prompt":
         return read_text(root / task_config["original_system_prompt"])
+    if mode == "task_prompt":
+        version = task_config.get("default_task_prompt_version")
+        versions = task_config.get("task_prompt_versions", [])
+        if not version and versions:
+            version = versions[0]
+        if not version:
+            raise ValueError(f"{task_name} task_prompt mode requires a task prompt version")
+        return read_text(root / f"prompts/tasks/{task_name}/{version}/system_prompt.txt")
     if mode == "universal_only":
         return read_text(root / config["universal_prompt"])
     if mode == "universal_adapter":
