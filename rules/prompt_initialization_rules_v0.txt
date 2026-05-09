@@ -14,3 +14,5 @@ Prompt initialization rules for VLM image-editing QC:
 12. The output schema must match the selected dimensions and define overall pass as all dimensions passing.
 13. Save annotation_summary.json with the generated v0 prompt so the design can be reviewed.
 14. After v0 is generated, stop initialization and hand off to the auto-tuning loop.
+15. The executable system/user prompt templates should be usable as a generic QC baseline. Do not weaken them just to make task-specific v0 look better.
+16. Keep the generic templates broad and compact; task-specific detail belongs in the generated task v0 prompt.

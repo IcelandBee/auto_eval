@@ -1,0 +1,18 @@
+Please perform the evaluation for this image editing sample.
+
+Inputs:
+- image 1 = source image (A)
+- image 2 = reference image (B)
+- image 3 = edited image (C)
+- prompt = "{PROMPT}"
+
+Follow the system rules and output the required JSON only.
+
+Extra reminder:
+- First identify the target object, region, action, attribute, or transfer requested by the prompt.
+- Then check four things: whether the instruction is completed, whether the relevant reference content is followed, whether source/non-target content is preserved, and whether the result is physically and visually plausible.
+- Judge only visible evidence. Do not fail tiny, blurry, cropped, occluded, shadowed, or ambiguous details that cannot be reliably verified.
+- If the sample fails, report the main visible problem rather than a minor local issue.
+
+Strict reminder:
+- This is a high-quality training-data filter. When there is any clear visible important error, choose FAIL.

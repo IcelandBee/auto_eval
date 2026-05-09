@@ -1,6 +1,6 @@
 ---
 name: vlm-qc-prompt-initialization
-description: Use when generating an initial VLM-as-a-judge QC prompt from a universal template, human-labeled image-editing cases, and prompt design rules
+description: Use when generating an initial VLM-as-a-judge QC prompt from executable prompt templates, human-labeled image-editing cases, and prompt design rules
 ---
 
 # VLM QC Prompt Initialization
@@ -12,7 +12,7 @@ Generate a task-specific initial QC prompt (`v0`) before the automatic tuning lo
 This skill covers the stage before `vlm-qc-auto-tuning`:
 
 ```text
-universal template + human labels + prompt design rules
+executable prompt templates + human labels + prompt design rules
   -> annotation summary
   -> task-specific v0 prompt
   -> auto-tuning loop
@@ -22,12 +22,14 @@ Do not use this skill to tune `v1`, `v2`, or later prompts from FP/FN reports. U
 
 ## Default Project Inputs
 
-Universal template:
+Executable prompt templates:
 
 ```text
-prompts/universal/universal_qc_prompt_v0.txt
-prompts/universal/universal_redlines_v0.txt
+prompts/templates/system_prompt_template_v0.txt
+prompts/templates/user_prompt_template_v0.txt
 ```
+
+These templates are both initialization inputs and directly runnable generic QC prompts. They intentionally stay broad: four common dimensions, visible-evidence rules, and compact redlines. Task-specific v0 generation should improve from this baseline by specializing dimensions and reminders from human labels.
 
 Human labels:
 
@@ -56,6 +58,17 @@ prompts/tasks/<task>/v0/system_prompt.txt
 prompts/tasks/<task>/v0/user_prompt.txt
 ```
 
+Reference material, not required every time:
+
+```text
+prompts/universal/universal_qc_prompt_v0.txt
+prompts/universal/universal_redlines_v0.txt
+code/texture_person/prompts/system_prompt.txt
+code/texture_person/prompts/user_prompt.txt
+code/human_item/prompts/system_prompt.txt
+code/human_item/prompts/user_prompt.txt
+```
+
 Recommended analysis output:
 
 ```text
@@ -68,7 +81,7 @@ runs/<task>/prompt_init_v0/prompt_init_input.json
 Always do two steps. Do not jump directly from raw labels to final prompt text.
 
 1. Build an annotation summary.
-2. Generate the v0 prompt from the summary and the universal template.
+2. Generate the v0 prompt from the summary and the executable templates.
 
 The annotation summary is the inspection surface. The user should be able to review why the dimensions and rules were chosen.
 
@@ -103,7 +116,7 @@ Generate a complete task-specific prompt, not an adapter fragment.
 
 The v0 prompt should:
 
-- keep universal input meanings for Image A, B, C, and P,
+- keep template input meanings for Image A, B, C, and P,
 - preserve visible-evidence and occlusion/cropping tolerance rules,
 - use task-specific dimensions inferred from labels,
 - define `is_passed` as all dimensions passing,
@@ -118,7 +131,7 @@ Recommended dimension count:
 - typical tasks: 3-6 dimensions,
 - complex tasks: up to 8 dimensions.
 
-Do not default to the universal six dimensions if the human labels suggest a smaller, clearer task-specific schema.
+Do not default to the template's four dimensions if the human labels suggest a smaller or clearer task-specific schema. The template dimensions are a baseline, not a contract.
 
 ## Output Contract
 
@@ -128,8 +141,8 @@ When asked to produce a v0 prompt, return or save:
 {
   "task": "<task>",
   "source_files": {
-    "universal_prompt": "prompts/universal/universal_qc_prompt_v0.txt",
-    "universal_redlines": "prompts/universal/universal_redlines_v0.txt",
+    "system_prompt_template": "prompts/templates/system_prompt_template_v0.txt",
+    "user_prompt_template": "prompts/templates/user_prompt_template_v0.txt",
     "human_labels": "<path>",
     "prompt_rules": "rules/Prompt修改规范.txt",
     "initialization_rules": "rules/prompt_initialization_rules_v0.txt"
@@ -172,7 +185,7 @@ For initialization, these rules apply differently than iterative tuning:
 
 - It is allowed to reorganize dimensions because there is no task prompt yet.
 - It is allowed to write a complete prompt rather than a patch.
-- It is not allowed to invent task requirements unsupported by labels, the universal template, or the prompt text.
+- It is not allowed to invent task requirements unsupported by labels, the executable templates, or the prompt text.
 
 ## Texture Transfer Guidance
 
@@ -238,7 +251,7 @@ Do not continue modifying v0 blindly. Let the automatic tuning loop produce metr
 
 - Do not skip annotation summary.
 - Do not copy individual human reasons directly into the prompt.
-- Do not preserve universal six dimensions by default.
+- Do not preserve the template's four dimensions by default.
 - Do not generate an adapter instead of a full task prompt.
 - Do not overwrite an existing v0 without explicit instruction.
 - Do not make the prompt stricter on invisible, cropped, occluded, blurry, or ambiguous details.
