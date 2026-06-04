@@ -19,6 +19,8 @@ Before running a command, writing a file, selecting data, or choosing an iterati
 
 Examples, placeholder paths, previous project habits, and command snippets are not defaults. Treat them as templates only.
 
+Repository examples, historical sample files, and removed `code/` or `data/` assets are not defaults. If a human-label file, image root, source prompt, API endpoint, model, output path, threshold, or runtime value is not explicitly provided for the current run or produced as an explicit artifact earlier in the same workflow, ask the user for it before acting.
+
 ## Startup Gate
 
 At the beginning of every auto-tuning run, confirm the Python runtime first.

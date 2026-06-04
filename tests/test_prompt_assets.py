@@ -38,12 +38,11 @@ def test_universal_only_excludes_adapter_text():
     assert "Task Adapter: texture_transfer" not in prompt
 
 
-def test_original_mode_uses_existing_task_user_prompt():
+def test_original_mode_is_not_enabled_without_source_prompt_files():
     config = PromptAssetConfig.load(ROOT / "configs" / "task_adapter_config.json")
 
-    user_prompt = get_user_prompt_template(config, "texture_transfer", "original_task_prompt")
-
-    assert "clothing texture transfer sample" in user_prompt
+    with pytest.raises(ValueError):
+        get_user_prompt_template(config, "texture_transfer", "original_task_prompt")
 
 
 def test_universal_modes_use_universal_user_prompt():
@@ -55,10 +54,10 @@ def test_universal_modes_use_universal_user_prompt():
     assert "image editing sample" in user_prompt
 
 
-def test_original_mode_uses_legacy_dimensions():
+def test_task_prompt_mode_uses_task_prompt_dimensions():
     config = PromptAssetConfig.load(ROOT / "configs" / "task_adapter_config.json")
 
-    dimensions = get_dimensions_for_mode(config, "texture_transfer", "original_task_prompt")
+    dimensions = get_dimensions_for_mode(config, "texture_transfer", "task_prompt")
 
     assert dimensions == ["instruction_following", "texture_consistency", "clothes_consistency"]
 

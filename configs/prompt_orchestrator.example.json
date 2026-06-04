@@ -3,8 +3,8 @@
   "task": "texture_transfer",
   "start_version": "v0",
   "max_iterations": 2,
-  "human_json": "data/texture_person/texture_person_label_sample.json",
-  "image_root": "D:\\path\\to\\images",
+  "human_json": "D:\\path\\to\\human_labels.json",
+  "image_root": "D:\\path\\to\\image_root",
   "rules": "optimizer/prompt_optimization_rules_v0.txt",
   "artifact_root": "runs/prompt_orchestrator/texture_transfer",
   "vlm": {

@@ -76,13 +76,14 @@ def validate_tasks(root: Path, config: dict[str, Any], taxonomy: dict[str, Any])
     prompt_modes = set(config["prompt_modes"].keys())
     for task_name, task_config in config["tasks"].items():
         require_file(root, task_config["adapter"])
-        require_file(root, task_config["original_system_prompt"])
-        require_file(root, task_config["original_user_prompt"])
-        require_file(root, task_config["data_sample"])
 
         unknown_modes = set(task_config["prompt_modes"]) - prompt_modes
         if unknown_modes:
             raise ValueError(f"{task_name} has unknown prompt modes: {sorted(unknown_modes)}")
+
+        if "original_task_prompt" in task_config["prompt_modes"]:
+            require_file(root, task_config["original_system_prompt"])
+            require_file(root, task_config["original_user_prompt"])
 
         for version in task_config.get("task_prompt_versions", []):
             task_prompt_dir = f"prompts/tasks/{task_name}/{version}"

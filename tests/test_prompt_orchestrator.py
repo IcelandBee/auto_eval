@@ -31,6 +31,16 @@ def test_config_requires_core_fields(tmp_path):
         OrchestratorConfig.load(config_path)
 
 
+def test_example_config_does_not_reference_local_sample_data():
+    config_path = Path("configs/prompt_orchestrator.example.json")
+    raw = config_path.read_text(encoding="utf-8")
+
+    assert "data/" not in raw
+    assert "data\\" not in raw
+    assert "code/" not in raw
+    assert "code\\" not in raw
+
+
 def test_parse_optimizer_response_extracts_fenced_json():
     response = """
 ```json

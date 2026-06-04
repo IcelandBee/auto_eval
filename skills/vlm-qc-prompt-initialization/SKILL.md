@@ -39,6 +39,8 @@ If any required input is still missing after checking the request and local cont
 
 Reference files may be consulted only when explicitly provided or clearly relevant from local context. Treat them as evidence, not defaults.
 
+Repository examples, historical sample files, and removed `code/` or `data/` assets are not defaults. If labels, source prompts, prompt rules, target task, target version, output directory, or interaction mode are missing, ask the user instead of substituting example paths or prior project habits.
+
 ## Required Workflow
 
 Always follow this sequence:
