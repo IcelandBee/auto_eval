@@ -4,6 +4,8 @@
 
 `scripts/run_prompt_orchestrator.py` runs a config-driven VLM QC prompt tuning loop.
 
+中文使用指南见 `docs/vlm-qc-skills-usage-guide.zh-CN.md`。
+
 For each iteration it evaluates the current task prompt version, writes `bad_cases.json`,
 builds `optimizer_input.json`, calls an OpenAI-compatible optimizer model, writes the next
 prompt version, evaluates it, compares reports, and records the accept/reject decision in
