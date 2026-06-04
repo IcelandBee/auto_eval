@@ -1,0 +1,36 @@
+{
+  "python": "C:\\Users\\Brian\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+  "task": "texture_transfer",
+  "start_version": "v0",
+  "max_iterations": 2,
+  "human_json": "data/texture_person/texture_person_label_sample.json",
+  "image_root": "D:\\path\\to\\images",
+  "rules": "optimizer/prompt_optimization_rules_v0.txt",
+  "artifact_root": "runs/prompt_orchestrator/texture_transfer",
+  "vlm": {
+    "base_url": "https://your-vlm-compatible-endpoint/v1",
+    "api_key_env": "VLM_API_KEY",
+    "model_name": "your-vlm-model",
+    "args": {
+      "max_workers": 4,
+      "max_tokens": 1024,
+      "temperature": 0.1,
+      "top_p": 0.95,
+      "seed": 42,
+      "max_retries": 1
+    }
+  },
+  "optimizer": {
+    "base_url": "https://your-optimizer-compatible-endpoint/v1",
+    "api_key_env": "OPTIMIZER_API_KEY",
+    "model_name": "your-prompt-optimizer-model",
+    "temperature": 0.1,
+    "max_tokens": 8192,
+    "use_response_format": true
+  },
+  "acceptance": {
+    "max_fn_increase": 0,
+    "min_precision_delta": 0.0,
+    "require_fp_decrease": true
+  }
+}

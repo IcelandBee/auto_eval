@@ -1,18 +1,26 @@
 Prompt initialization rules for VLM image-editing QC:
 
-1. Generate a full task-specific v0 prompt from the universal template, human labels, and prompt design rules.
-2. Do not generate an adapter fragment. The output should be a complete system prompt and user prompt.
-3. Always summarize human labels before writing the prompt.
-4. Use existing annotation dimensions as strong hints, but derive final dimensions from recurring failure reasons and task requirements.
-5. Keep dimensions small and task-specific. Prefer 2-6 clear dimensions when possible.
-6. Each dimension must cover a visible, judgeable class of quality issues.
-7. Do not copy individual human reasons directly into the prompt. Abstract them into visual criteria.
-8. Do not add one-case rules. Case-specific patterns should be listed in the summary as excluded patterns.
-9. Preserve visible-evidence constraints. Do not fail invisible, fully occluded, cropped, too small, blurry, or ambiguous regions.
-10. Preserve useful tolerance rules for acceptable variation, especially folds, lighting, perspective, occlusion, and minor unverifiable details.
-11. Prefer Precision for training-data filtering, but do not make the initial prompt so strict that likely valid samples are broadly rejected.
-12. The output schema must match the selected dimensions and define overall pass as all dimensions passing.
-13. Save annotation_summary.json with the generated v0 prompt so the design can be reviewed.
-14. After v0 is generated, stop initialization and hand off to the auto-tuning loop.
-15. The executable system/user prompt templates should be usable as a generic QC baseline. Do not weaken them just to make task-specific v0 look better.
-16. Keep the generic templates broad and compact; task-specific detail belongs in the generated task v0 prompt.
+1. Generate a full task-specific v0 prompt from explicit user-provided or context-confirmed inputs, human labels, and prompt design rules.
+2. Do not use default task names, default label paths, default prompt paths, or default versions to replace missing required inputs. Ask the user for blocker information.
+3. Do not generate an adapter fragment. The output should be a complete system prompt and user prompt.
+4. Always summarize human labels before writing the prompt.
+5. The annotation summary must define the editing task from the prompt field(s): task goal, input roles, edit operation, target scope, reference usage, preservation scope, success boundary, failure boundary, and tolerated variations.
+6. If the prompt field mixes distinct task families, ask whether to split the labels or create a broader prompt before continuing.
+7. Use existing annotation dimensions as strong hints, but derive final dimensions from the task definition, recurring failure reasons, prompt patterns, and task requirements.
+8. Keep dimensions small and task-specific. Prefer 2-6 clear dimensions when possible.
+9. Each dimension must cover a visible, judgeable class of quality issues.
+10. Prefer reusing, merging, or renaming existing dimensions before adding new ones. Add a dimension only when recurring evidence reveals an uncovered quality class.
+11. Usually add at most 1-2 new dimensions. If more seem necessary, ask the user before expanding.
+12. Record evidence sources for each dimension decision, such as prompt patterns, human reasons, existing dimensions, templates, rules, or reference prompts.
+13. Do not copy individual human reasons directly into the prompt. Abstract them into visual criteria.
+14. Do not add one-case rules. Case-specific patterns should be listed in the summary as excluded patterns.
+15. Preserve visible-evidence constraints. Do not fail invisible, fully occluded, cropped, too small, blurry, or ambiguous regions.
+16. Preserve useful tolerance rules for acceptable variation, especially folds, lighting, perspective, occlusion, and minor unverifiable details.
+17. Prefer Precision for training-data filtering, but do not make the initial prompt so strict that likely valid samples are broadly rejected.
+18. The output schema and downstream task configuration must match the selected dimensions and define overall pass as all dimensions passing.
+19. Before final prompt files are written in interactive mode, present the inferred task definition, dimension plan, redlines, and tolerance rules to the user for confirmation.
+20. In batch/non-interactive mode, proceed past the review gate only if the user explicitly requested non-interactive execution or provided a pre-approved task definition and dimension plan.
+21. Save annotation_summary.json with evidence sources and user-confirmation status so the design can be reviewed.
+22. After v0 is generated, stop initialization and hand off to the auto-tuning loop.
+23. The executable system/user prompt templates should be usable as a generic QC baseline. Do not weaken them just to make task-specific v0 look better.
+24. Keep generic templates broad and compact; task-specific detail belongs in the generated task v0 prompt.
